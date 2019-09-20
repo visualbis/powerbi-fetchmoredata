@@ -64,3 +64,6 @@ typings/
 .tmp
 dist
 webpack.statistics.*
+
+#data
+*.csv
