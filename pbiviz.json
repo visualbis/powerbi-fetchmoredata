@@ -1,0 +1,25 @@
+{
+    "visual": {
+        "name": "fetchmoredata",
+        "displayName": "fetchmoredata",
+        "guid": "fetchmoredataBAA76F227A5440A3A61225B4744C9B24",
+        "visualClassName": "Visual",
+        "version": "1.0.0",
+        "description": "Sample Power BI Custom Visual that uses the fetchMoreData API",
+        "supportUrl": "https://github.com/danmarshall/powerbi-fetchmoredata/issues",
+        "gitHubUrl": "https://github.com/danmarshall/powerbi-fetchmoredata"
+    },
+    "apiVersion": "2.6.0",
+    "author": {
+        "name": "Dan Marshall",
+        "email": "danmar@microsoft.com"
+    },
+    "assets": {
+        "icon": "assets/icon.png"
+    },
+    "externalJS": null,
+    "style": "style/visual.less",
+    "capabilities": "capabilities.json",
+    "dependencies": null,
+    "stringResources": []
+}
