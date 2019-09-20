@@ -42,9 +42,13 @@ export class Visual implements IVisual {
     private updateCount: number;
     private settings: VisualSettings;
     private textNode: Text;
+    private logElement: HTMLElement;
+    private host: powerbi.extensibility.visual.IVisualHost;
+    private fetchMoreTimer: number;
 
     constructor(options: VisualConstructorOptions) {
         console.log('Visual constructor', options);
+        this.host = options.host;
         this.target = options.element;
         this.updateCount = 0;
         if (typeof document !== "undefined") {
@@ -55,7 +59,14 @@ export class Visual implements IVisual {
             new_em.appendChild(this.textNode);
             new_p.appendChild(new_em);
             this.target.appendChild(new_p);
+
+            this.logElement = document.createElement('div');
+            this.target.appendChild(this.logElement);
         }
+    }
+
+    public log(message: string) {
+        this.logElement.innerText = message + '\n' + this.logElement.innerText;
     }
 
     public update(options: VisualUpdateOptions) {
@@ -63,6 +74,28 @@ export class Visual implements IVisual {
         console.log('Visual update', options);
         if (typeof this.textNode !== "undefined") {
             this.textNode.textContent = (this.updateCount++).toString();
+        }
+
+        clearTimeout(this.fetchMoreTimer);
+        const dataView = options && options.dataViews && options.dataViews[0];
+        if (!dataView) {
+            this.log('no dataview');
+        } else if (!dataView.table) {
+            this.log('no dataview table');
+        } else {
+            let doneFetching = true;
+            if (dataView.metadata.segment) {
+                this.log('calling fetchMoreData');
+                doneFetching = !this.host.fetchMoreData();
+            }
+            if (doneFetching) {
+                this.log(`done fetching - rowcount is ${dataView.table.rows.length}`);
+            } else {
+                this.log(`fetching - rowcount is ${dataView.table.rows.length}`);
+                this.fetchMoreTimer = window.setTimeout(() => {
+                    this.log('fetchMoreTimeout');
+                }, 5000);
+            }
         }
     }
 
