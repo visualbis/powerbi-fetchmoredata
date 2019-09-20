@@ -1,5 +1,5 @@
 # powerbi-fetchmoredata
-Sample Power BI Custom Visual that uses the fectchMoreData API
+Sample Power BI Custom Visual that uses the fetchMoreData API
 
 ## Sample data
 To create sample data, run:
