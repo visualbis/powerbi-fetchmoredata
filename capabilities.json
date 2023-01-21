@@ -1,26 +1,183 @@
+
 {
-    "dataRoles": [
+    "privileges": [
         {
-            "displayName": "Values",
-            "name": "values",
-            "kind": "GroupingOrMeasure"
+            "name": "ExportContent",
+            "essential": true
+        },
+        {
+            "name": "LocalStorage",
+            "essential": true
+        },
+        {
+            "name": "WebAccess",
+            "essential": true,
+            "parameters": []
         }
     ],
-    "objects": {},
+    "dataRoles": [
+        {
+            "displayName": "Rows",
+            "name": "rows",
+            "kind": "Grouping",
+            "description": "Assign one or more categories. "
+        },
+        {
+            "displayName": "Columns",
+            "displayNameKey": "groupKey",
+            "name": "columns",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Values (AC)",
+            "displayNameKey": "ameasureKey",
+            "name": "ameasure",
+            "kind": "Measure",
+            "requiredTypes": [
+                {
+                    "numeric": true
+                },
+                {
+                    "integer": true
+                }
+            ]
+        }
+    ],
     "dataViewMappings": [
         {
-            "table": {
+            "matrix": {
                 "rows": {
                     "for": {
-                        "in": "values"
+                        "in": "rows"
                     },
                     "dataReductionAlgorithm": {
                         "window": {
-                            "count": 30000
+                            "count": 2000
                         }
                     }
+                },
+                "columns": {
+                    "for": {
+                        "in": "columns"
+                    },
+                    "dataReductionAlgorithm": {
+                        "top": {
+                            "count": 15
+                        }
+                    }
+                },
+                "values": {
+                    "select": [
+                        {
+                            "for": {
+                                "in": "ameasure"
+                            }
+                        }
+                    ]
+                }
+            },
+            "conditions": [
+                {
+                    "columns": {
+                        "max": 10
+                    },
+                    "pymeasure": {
+                        "max": 5
+                    },
+                    "ameasure": {
+                        "max": 50
+                    },
+                    "plmeasure": {
+                        "max": 5
+                    },
+                    "fcmeasure": {
+                        "max": 5
+                    },
+                    "signMeasure": {
+                        "max": 1
+                    }
+                }
+            ]
+        }
+    ],
+    "objects": {
+        "dataReductionCustomization": {
+            "displayName": "Data Reduction",
+            "properties": {
+                "rowCount": {
+                    "type": {
+                        "numeric": true
+                    },
+                    "displayName": "Row Reduction",
+                    "description": "Show Reduction for all row groups",
+                    "suppressFormatPainterCopy": true
+                },
+                "columnCount": {
+                    "type": {
+                        "numeric": true
+                    },
+                    "displayName": "Column Reduction",
+                    "description": "Show Reduction for all column groups",
+                    "suppressFormatPainterCopy": true
                 }
             }
         }
-    ]
+    },
+    "subtotals": {
+        "matrix": {
+            "rowSubtotals": {
+                "propertyIdentifier": {
+                    "objectName": "subTotals",
+                    "propertyName": "rowSubtotals"
+                },
+                "defaultValue": true
+            },
+            "rowSubtotalsPerLevel": {
+                "propertyIdentifier": {
+                    "objectName": "subTotals",
+                    "propertyName": "perRowLevel"
+                },
+                "defaultValue": false
+            },
+            "columnSubtotals": {
+                "propertyIdentifier": {
+                    "objectName": "subTotals",
+                    "propertyName": "columnSubtotals"
+                },
+                "defaultValue": true
+            },
+            "columnSubtotalsPerLevel": {
+                "propertyIdentifier": {
+                    "objectName": "subTotals",
+                    "propertyName": "perColumnLevel"
+                },
+                "defaultValue": false
+            },
+            "levelSubtotalEnabled": {
+                "propertyIdentifier": {
+                    "objectName": "subTotals",
+                    "propertyName": "levelSubtotalEnabled"
+                },
+                "defaultValue": true
+            }
+        }
+    },
+    "dataReductionCustomization": {
+        "matrix": {
+            "rowCount": {
+                "propertyIdentifier": {
+                    "objectName": "dataReductionCustomization",
+                    "propertyName": "rowCount"
+                },
+                "defaultValue": 2000
+            },
+            "columnCount": {
+                "propertyIdentifier": {
+                    "objectName": "dataReductionCustomization",
+                    "propertyName": "columnCount"
+                },
+                "defaultValue": 15
+            }
+        }
+    }
 }

@@ -66,22 +66,59 @@ export class Visual implements IVisual {
     }
 
     public log(message: string) {
+        console.log(message);
         this.logElement.innerText = message + '\n' + this.logElement.innerText;
+    }
+
+    public clearLog() {
+        this.logElement.innerText = '';
+    }
+
+    public static getHierarchyCount(hierarchy: powerbi.DataViewHierarchy) {
+        const { root } = hierarchy;
+        let count = [0, 0];
+
+        if (!hierarchy) {
+            return count;
+        }
+
+        const getHierCount = (element: any) => {
+            if (element.children) {
+                element.children.map(i => getHierCount(i));
+            }
+            if (element.value && !element.children) {
+                count[0] += 1;
+            }
+            if (element.isSubtotal) {
+                count[1] += 1;
+            }
+        }
+
+        getHierCount(hierarchy.root);
+
+        return count;
+
     }
 
     public update(options: VisualUpdateOptions) {
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-        console.log('Visual update', options);
+        console.log('Data reduction settings', this.settings.dataReductionCustomization);
+        console.log('Dataview', options?.dataViews[0]?.matrix);
         if (typeof this.textNode !== "undefined") {
             this.textNode.textContent = (this.updateCount++).toString();
         }
 
         clearTimeout(this.fetchMoreTimer);
         const dataView = options && options.dataViews && options.dataViews[0];
+        const rowCount = Visual.getHierarchyCount(dataView?.matrix.rows);
+        const colCount = Visual.getHierarchyCount(dataView?.matrix.columns);
+
+        this.clearLog();
+
         if (!dataView) {
             this.log('no dataview');
-        } else if (!dataView.table) {
-            this.log('no dataview table');
+        } else if (!dataView.matrix) {
+            this.log('no dataview matrix');
         } else {
             let doneFetching = true;
             if (dataView.metadata.segment) {
@@ -89,9 +126,11 @@ export class Visual implements IVisual {
                 doneFetching = !this.host.fetchMoreData();
             }
             if (doneFetching) {
-                this.log(`done fetching - rowcount is ${dataView.table.rows.length}`);
+                this.log(`done fetching - row count is ${rowCount} and total is ${rowCount[0] + rowCount[1]}`);
+                this.log(`done fetching - col count is ${colCount} and total is ${colCount[0] + colCount[1]}`);
             } else {
-                this.log(`fetching - rowcount is ${dataView.table.rows.length}`);
+                this.log(`done fetching - row count is ${rowCount} and total is ${rowCount[0] + rowCount[1]}`);
+                this.log(`done fetching - col count is ${colCount} and  total is ${colCount[0] + colCount[1]}`);
                 this.fetchMoreTimer = window.setTimeout(() => {
                     this.log('fetchMoreTimeout');
                 }, 5000);

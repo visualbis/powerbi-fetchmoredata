@@ -29,20 +29,31 @@
 import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
+export const INITIAL_DATA_REDUCTION_COL_COUNT = 15;
+export const INITIAL_DATA_REDUCTION_ROW_COUNT = 2000;
+
+
 export class VisualSettings extends DataViewObjectsParser {
-      public dataPoint: dataPointSettings = new dataPointSettings();
-      }
+  public dataPoint: dataPointSettings = new dataPointSettings();
+  public dataReductionCustomization: dataReduction = new dataReduction();
+}
 
-    export class dataPointSettings {
-     // Default color
-      public defaultColor: string = "";
-     // Show all
-      public showAllDataPoints: boolean = true;
-     // Fill
-      public fill: string = "";
-     // Color saturation
-      public fillRule: string = "";
-     // Text Size
-      public fontSize: number = 12;
-     }
+export class dataPointSettings {
+  // Default color
+  public defaultColor: string = "";
+  // Show all
+  public showAllDataPoints: boolean = true;
+  // Fill
+  public fill: string = "";
+  // Color saturation
+  public fillRule: string = "";
+  // Text Size
+  public fontSize: number = 12;
+}
 
+export class dataReduction {
+  rowCount: number = INITIAL_DATA_REDUCTION_ROW_COUNT;
+  columnCount: number = INITIAL_DATA_REDUCTION_COL_COUNT;
+  // rowCount: string = '3000';
+  // columnCount: string = '10';
+}
