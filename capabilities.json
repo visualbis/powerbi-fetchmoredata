@@ -31,7 +31,7 @@
         {
             "displayName": "Values (AC)",
             "displayNameKey": "ameasureKey",
-            "name": "ameasure",
+            "name": "valueMeasures",
             "kind": "Measure",
             "requiredTypes": [
                 {
@@ -70,7 +70,7 @@
                     "select": [
                         {
                             "for": {
-                                "in": "ameasure"
+                                "in": "valueMeasures"
                             }
                         }
                     ]
@@ -78,23 +78,8 @@
             },
             "conditions": [
                 {
-                    "columns": {
-                        "max": 10
-                    },
-                    "pymeasure": {
-                        "max": 5
-                    },
-                    "ameasure": {
+                    "valueMeasures": {
                         "max": 50
-                    },
-                    "plmeasure": {
-                        "max": 5
-                    },
-                    "fcmeasure": {
-                        "max": 5
-                    },
-                    "signMeasure": {
-                        "max": 1
                     }
                 }
             ]
