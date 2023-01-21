@@ -1,19 +1,6 @@
 
 {
     "privileges": [
-        {
-            "name": "ExportContent",
-            "essential": true
-        },
-        {
-            "name": "LocalStorage",
-            "essential": true
-        },
-        {
-            "name": "WebAccess",
-            "essential": true,
-            "parameters": []
-        }
     ],
     "dataRoles": [
         {
