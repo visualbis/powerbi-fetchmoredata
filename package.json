@@ -12,11 +12,11 @@
     "@types/d3": "5.7.2",
     "d3": "7.6.1",
     "powerbi-visuals-utils-dataviewutils": "^2.2.1",
-    "powerbi-visuals-api": "~2.6.1",
+    "powerbi-visuals-api": "~2.6.2",
     "core-js": "3.2.1"
   },
   "devDependencies": {
-    "ts-loader": "6.0.4",
+    "ts-loader": "9.4.3",
     "typescript": "3.5.3"
   }
 }
